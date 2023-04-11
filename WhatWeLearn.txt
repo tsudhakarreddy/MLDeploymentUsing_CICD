@@ -1,0 +1,75 @@
+https://www.youtube.com/watch?v=Rv6UFGNmNZg&list=PLZoTAELRMXVPS-dOaVbAux22vzqdgoGhG&index=2
+ML Project End-End , Deployment using CI/CD Process.
+Setup the project with GITHub.
+
+1.Data Ingestion
+2.Data Transformation
+3.Model Trainer
+4.Model Evaluation
+5.Model Deployment
+
+All this will be done via CI/CD pipeline - Using GITHub Actions
+Deployment - we use AWS
+
+
+Setup GitHub Repo
+1. New Environment
+
+	a. create GitHub Repo (MLDeploymentUsing_CICD)
+	b. Create a folder in local(D:\Study\Python\DeploymentUsing_CICD)
+	c. Open Anaconda terminal --> cd D:\Study\Python\DeploymentUsing_CICD and type Code . (to open VS Code).
+	d. In VS Code, open new terminal and create Environment to install all packages.
+	e. create environment. conda create -p venv python==3.8 -y
+	f. Next activate the environment. conda activate venv/
+	g. Clone GitHub to venv environment (to sync the codes). (Installing GiT for windows first time in system. https://www.youtube.com/watch?v=UhJHFis-iXk&t=332s)
+	h. create "README.md" file in VS Code.
+	h. Once GIT for windows is setup , Follow the steps
+	i. git init , git add README.md, git commit -m "first commit", git branch -M main, git remote add origin https://github.com/tsudhakarreddy/MLDeploymentUsing_CICD.git, git push -u origin main
+	j. Refresh GIT Repo.
+	k. Next create git ignore. this basically ignores or remove the files that are not required... Create .gitignore in Repo. 
+	l. Next write git pull in vscode to pull the changes into local.
+	
+
+2. setup.py
+
+	1. create setup.py --> add the code.
+	
+		from setuptools import find_packages, setup
+		from typing import List
+		HYPEN_E_DOT='-e .'   # '-e .' used in requirements.txt to identify the setup.py to execute.
+							 # But we dont need this -e. in setup.py so we remove it.
+
+		def get_requirements(file_path:str)->List[str]:
+			#this function returns the list of requirements
+			requirements=[]
+			with open(file_path) as file_obj:
+				requirements=file_obj.readlines()
+				requirements = [req.replace("\n","") for req in requirements]
+
+				if HYPEN_E_DOT in requirements:
+					requirements.remove(HYPEN_E_DOT)
+
+			return requirements
+
+
+		setup(
+			#Meta data info regarding entire project
+			name='ML Project',
+			version='0.0.1',
+			author='Sudhakar Reddy',
+			author_email='tsudhakarreddy@gmail.com',
+			packages=find_packages(),
+			install_requires=get_requirements('requirements.txt')
+
+		)
+
+	
+3. requirements.txt
+	pandas
+	numpy
+	seaborn
+	-e .
+
+
+4. Create src folder and create __initi__.py (When we try to install the setup, it looks for init.py and runs to install packages.
+   Build the package in terminal. --> pip install -r requirements.txt
